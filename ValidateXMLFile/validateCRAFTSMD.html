@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html  lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Check Exchange file</title>
+  <SCRIPT type="text/javascript" src='./validateCRAFTSMD.js'></script>
+  <link type='text/css' rel="stylesheet" href="./craftsmdTools.css" />
+</head>
+
+<BODY class="console" onload="start()" id="body">
+	<DIV class="custom-row" id='mainD' width='130px' >
+		<div id="div1" class="custom-but">CRAFTS-MD LINT by KIMedS</div>
+		<div id="div2" class="custom-but">HTML Walk<input type="checkbox" id="htmlwalk" class="custom-box"  /></div>
+		<div id="div3" class="custom-but">Tree Walk<input type="checkbox" id="treewalk" class="custom-box"  /></div>
+		<div style="display:none" id="div4" class="custom-but">Elements<input type="checkbox" id="elements" class="custom-box" /></div>
+		<div id="div5" class="custom-but">Syntax Err<input type="checkbox" id="syntaxerr" class="custom-box" checked="true"/></div>
+		<div id="div6" class="custom-but">HTML Rule Usage<input type="checkbox" id="htmlusage" class="custom-box"  /></div>	
+		<div id="div7" class="custom-but">RDF/A Concept Usage<input type="checkbox" id="rdfausage" class="custom-box"  /></div>	
+		<div id="divi" class="custom-typ">Instances of &nbsp;<p>
+			
+			<input type="radio" name="instances" id="instance1" value="riskman:DomainSpecificHazard" >
+				<label for="riskman:DomainSpecificHazard">DomainSpecificHazard</label>
+			</input><p>
+			<input type="radio" name="instances" id="instance2" value="riskman:AnalyzedRisk" >
+				<label for="riskman:AnalyzedRisk">AnalyzedRisk</label>
+			</input><p>
+			<input type="radio" name="instances" id="instance3" value="riskman:ControlledRisk" >
+				<label for="riskman:ControlledRisk">ControlledRisk</label>
+			</input><p>
+		</div>
+		<div id="file" class="custom-typ"><button id="fileButton" class="custom-fil" onclick="document.getElementById('filechoice').click()">Exchange file:</button></div>
+		<input type='file' id="filechoice" style="display:none"/>
+	</DIV>  
+</BODY>
+
+</html>
+
