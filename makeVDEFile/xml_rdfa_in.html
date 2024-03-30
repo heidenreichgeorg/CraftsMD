@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Make HTML with RDF/A</title>
+  <SCRIPT type="text/javascript" src='../src/xml_rdfa2html.js'></script>
+  <link type='text/css' rel="stylesheet" href="../src/generator.css" />
+</head>
+
+<BODY class="console" onload="start()" id="body">
+  <DIV class="button-row" id='mainD' width='130px' >
+    <button class="custom-but" onclick="document.getElementById('filechoice').click()">Internal file:</button>
+    <input type='file' id="filechoice" style="display:none">
+	<div id="filename" class="custom-fil">Internal file</div>
+	<div               class="custom-fil" onClick="onSave()">Save</div>
+	<div               class="custom-fil" ><input type="checkbox" id="exComp" title="Export Comp" checked="checked"/>Component</div>
+	<div               class="custom-fil" ><input type="checkbox" id="exFunc" title="Export Func" checked="checked"/>Function</div>
+  <div               class="custom-fil" ><input type="checkbox" id="exCaus" title="Exp. Cause" checked="checked"/>Cause Text</div>
+  <div               class="custom-fil" ><input type="checkbox" id="exHaSi" title="Exp. Haz.Situation" checked="checked"/>Haz Situation</div>
+	<div               class="custom-fil" ><input type="checkbox" id="exHKey" title="Exp. Haz. Key" checked="checked"/>Hazard Key</div>
+	<div               class="custom-fil" ><input type="checkbox" id="exHarm" title="Export Harm" checked="checked"/>Harm</div>
+	<div id="filesig" >signature</div>
+  </DIV>  
+</BODY>
+
+</html>
