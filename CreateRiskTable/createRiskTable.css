@@ -1,0 +1,76 @@
+body { background-color:#FFFFFF; }
+
+.table { display:table; }
+
+.box     {    padding: 5px; width:100%;                 display:table-row; }
+.boxColl {    padding: 5px; width:100%;  height: 40px;  display:table-row; }
+.boxRaw {     padding: 5px; width:100%;  height:350px;  display:table-row; }
+.boxConsole { padding:10px; width:100%;  height: 50px;  display:table-row; }
+
+.first-row { height:15px; }
+
+.neonText {
+  color: #111144; font-family: Verdana, sans-serif; font-size: 8pt;
+  padding-left: 0px;
+  border: none; 
+  overflow: hidden; 
+}
+
+
+.button-row { display:table-row; color: #111144; text-align:center; font-family: 'Orbitron', Verdana, sans-serif;font-size: 10pt; }
+
+
+.button { float:left; text-align:center; width:133px; font-family: 'Orbitron', Verdana, sans-serif;font-size: 9pt; height:18px; padding:4px; }
+.field  { text-align:center; width:120px; display:table-cell; } 
+
+.raw    { padding: 2px; float:left; text-align:left; }
+.spacer { border: 1px solid; border-color: #9090C0; }
+.dragit { border: 1px solid; border-color: #EEEEFF; }
+
+.drop {   color: #111144; font-family: Verdana, sans-serif; font-size: 8pt; }
+
+ 
+
+
+ 
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+
+.custom-file-input::before {
+  content: 'CSV Risk File';
+  display: inline-block;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
+
+
+
+ 
+.custom-ac-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.custom-ac-input::before {
+  content: 'CSV Assurance';
+  display: inline-block;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
+
+
+ 
+.custom-machine-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.custom-machine-input::before {
+  content: 'CSV State Machine';
+  display: inline-block;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
