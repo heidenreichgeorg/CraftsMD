@@ -55,8 +55,8 @@ const RISKMAN_HAS_IMPL     = 'riskman:hasImplementationManifest';
 
 const RISKMAN_ID         = 'riskman:id';
 const RISKMAN_NAME       = 'riskman:name';
-const RISKMAN_SEVERITY   = 'riskman:severity';
-const RISKMAN_PROBABILITY= 'riskman:probability';
+const RISKMAN_SEVERITY   = 'riskman:hasSeverity';
+const RISKMAN_PROBABILITY= 'riskman:hasProbability';
 const RISKMAN_TEXT       = 'riskman:text';
 const RISKMAN_CODE       = 'riskman:code';
 const RISKMAN_EXTERNAL   = 'riskman:external';
