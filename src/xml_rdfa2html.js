@@ -276,13 +276,16 @@ function putElement(strContent) {
 
 
 function getPayload() { 
+// GH20240612 fixed
   const allObjects=document.getElementsByTagName('div');
-  for(let i=allObjects.length-1;i>=0;i--) if(allObjects.item(i).getAttribute('typeof')=="'+RISKMAN_CORI+'") {
-        let cori = allObjects.item(i);
-        for(var cc=0;cc<cori.childElementCount;cc++) cori.style.display='table-row';        
+  for(let i=allObjects.length-1;i>=0;i--) {
+    if(allObjects.item(i).getAttribute('typeof')==RISKMAN_CORI) {
+      allObjects.item(i).style.display="table-row"; 
+    }
   }
   return document.getElementById(TAG_CONTENT).innerHTML;
 }
+
 
 
 
