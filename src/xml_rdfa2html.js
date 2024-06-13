@@ -496,25 +496,24 @@ function prepareCOR(jRiskFile,jRIT) {
 	
 
 
+  let regHazards = jRIT.regHazard?jRIT.regHazard.map((haz)=>(haz.name)):[];
 
-
-  return prepareRISKITEMfromDSH(jRiskFile,jRIT,hazardId,hazTerm,componentId,componentName,funcId,funcName);
+  return prepareRISKITEMfromDSH(jRiskFile,jRIT,hazardId,hazTerm,regHazards,componentId,componentName,funcId,funcName);  
 
 
 }
 
 
-function prepareRISKITEMfromDSH(jRiskFile,jDSH,hazardId,arrHazard,componentId,componentName,funcId,funcName) {
-  let result="";
+function prepareRISKITEMfromDSH(jRiskFile,jDSH,hazardId,hazTerm,arrHazard,componentId,componentName,funcId,funcName) {  let result="";
   let aRIT = getRITByDSH(jDSH);
   
-  if(aRIT) aRIT.forEach((jRIT)=>{if(jRIT) result+=prepareRIT(jRiskFile,jDSH,jRIT,hazardId,arrHazard,componentId,componentName,funcId,funcName);});
+  if(aRIT) aRIT.forEach((jRIT)=>{if(jRIT) result+=prepareRIT(jRiskFile,jDSH,jRIT,hazardId,hazTerm,arrHazard,componentId,componentName,funcId,funcName);});
   return result;	
 }
 
 const lim="'";
 
-function prepareRIT(jRiskFile,jDSH,jRIT,hazardId,arrHazard,componentId,componentName,funcId,funcName) {
+function prepareRIT(jRiskFile,jDSH,jRIT,hazardId,hazTerm,arrHazard,componentId,componentName,funcId,funcName) {
 
 
   let hsId = jRIT.refHS; // VALUE for hazardous situation
