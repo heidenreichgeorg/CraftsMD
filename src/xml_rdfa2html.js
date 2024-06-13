@@ -279,7 +279,7 @@ function getPayload() {
 // GH20240612 fixed
   const allObjects=document.getElementsByTagName('div');
   for(let i=allObjects.length-1;i>=0;i--) {
-    if(allObjects.item(i).getAttribute('typeof')==RISKMAN_CORI) {
+    if(allObjects.item(i).getAttribute('typeof')===RISKMAN_CORI) {
       allObjects.item(i).style.display="table-row"; 
     }
   }
