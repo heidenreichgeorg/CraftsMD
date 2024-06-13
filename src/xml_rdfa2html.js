@@ -458,7 +458,12 @@ function prepareCOR(jRiskFile,jRIT) {
 
   // 20240118
   // annotate with properties for finding the tables 
-	
+	let hazTerm = '<div class="object" property="'+RISKMAN_HAZARD+'"><div class="value" property="'+RISKMAN_HAZARD+'">'+
+      (jRIT.regEncodedHazard?jRIT.regEncodedHazard.map((encHazTerm)=>encHazTerm.name).join('</div><div class="value">'):"")+
+      '</div></div>';
+  
+  // must do prepareXXX in order to assign craftsMDId
+
 
   tables = '<div class="object"><div class="value"><DIV class="prop">\n'+ 
 
@@ -493,7 +498,7 @@ function prepareCOR(jRiskFile,jRIT) {
 
 
 
-  return prepareRISKITEMfromDSH(jRiskFile,jRIT,hazardId,jRIT.regHazard.map((haz)=>(haz.name)),componentId,componentName,funcId,funcName);
+  return prepareRISKITEMfromDSH(jRiskFile,jRIT,hazardId,hazTerm,componentId,componentName,funcId,funcName);
 
 
 }
