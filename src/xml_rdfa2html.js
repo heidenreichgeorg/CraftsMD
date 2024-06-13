@@ -567,7 +567,7 @@ function prepareRIT(jRiskFile,jDSH,jRIT,hazardId,arrHazard,componentId,component
   '              <div class="prop"  property="'+RISKMAN_HASTARGET+'"     title="target"><div class="object" typeof="'+RISKMAN_TARGET+'"><div class="value" ><div class="prop" >'+(jRIT.regTarget?(jRIT.regTarget.join('</div></div><div class="value" ><div class="prop" >')):"?")+'</div></div></div></div>\n'+
   
     // Analyzed Risk
-  '              <div class="prop"   property="'+RISKMAN_HASHAZSIT+'"        title="hazardous situation">'+jHazSit.name+'</div>\n'+	
+  '              <div class="prop"   property="'+RISKMAN_HASHAZSIT+'"        title="hazardous situation">'+hazsitName+'</div>\n'+	
   '              <div class="prop"  property="'+RISKMAN_HASHARM+'"           title="harm" ref="'+harmId+'">'+harmName+'</div>\n'+
   '              <div class="clos"   property="'+RISKMAN_HASPRERISK+'"       title="pre-risk">'+(jRIT.risk?formatRiskValues(RISKMAN_RISKLEVEL, jRIT.risk):"")+'</div>'+
 	'            </div>\n'+ // ARI id v5
@@ -1025,48 +1025,50 @@ function generateREL(typ,hList) { return hList.map((hPrimKey)=>('<a href="#'+typ
 
 function formatSDAValues(jRiskFile,refSDA,strComponent,strFunction) { 
   let riskSDA = findByKey(jRiskFile.relSDA,"id",refSDA);
-  //if(!riskDA) riskSDA = 
+  let result="%";
+  if(riskSDA) { 
 
-  riskSDA.craftsMDid = nextSDA();
-  let sdaId=riskSDA.craftsMDid;
+    riskSDA.craftsMDid = nextSDA();
+    let sdaId=riskSDA.craftsMDid;
 
-  console.log("formatSDAValues("+refSDA+")="+JSON.stringify(riskSDA));
+    console.log("formatSDAValues("+refSDA+")="+JSON.stringify(riskSDA));
 
-  let result = '   <div class="value"  typeof="'+RISKMAN_RISK_SDA+'" id="SDA'+sdaId+'">'+ 
+    result = '   <div class="value"  typeof="'+RISKMAN_RISK_SDA+'" id="SDA'+sdaId+'">'+ 
+    
+      '      <div class="prop"><div class="object case"><div class="value">\n'+ // v4_1
+      '          <div class="clos"  property="'+RISKMAN_PROBLEM+'"title="problem">In case of '+riskSDA.problem+'\n</div>'+  
+      '          <div class="clos"  property="'+RISKMAN_GOAL+'"title="goal">risk of '+riskSDA.goal+' due to </div>\n'+  
+      '          <div class="clos"  property="'+RISKMAN_CAUSE+'"title="cause">'+riskSDA.cause+' is lowered.</div>\n'+  // was prop
+      '      </div></div></div>\n'+ // v4_1
+
+
+      '      <div class="clos"  property="'+RISKMAN_HAS_SUB_SDA+'">\n'+         
+
+              //any SDA
+              riskSDA.regAssurance.map((mitigation,asu)=>(
+      '         <div class="object rsda" typeof="'+RISKMAN_SDA+'" id="'+sdaId+'ASU'+asu+'">\n'+
+      '               <div class="prop" property="'+RISKMAN_ID+'" title="id">'+sdaId+'ASU'+asu+'</div>\n'+
+      '               <div class="prop" title="measureId">'+mitigation.id+'</div>\n'+
+      '               <div class="prop" title="sdaName">'+mitigation.sdaAssurance.name+'</div>\n'+
+      '               <div class="prop" title="sdaText">'+mitigation.sdaAssurance.text+'</div>\n'+
+      '               <div class="prop" title="requirementCode">'+mitigation.sdaAssurance.requirementCode+'</div>\n'+
+      '             </div>\n'
+              )).join('\n')+
+
+
+      '      </div>\n'+
+  // v6 </div>
+      '		   <div class="object" property="'+RISKMAN_HAS_IMPL+'" title="Implementation">\n'+
+      '		     <div class="value" typeof="'+RISKMAN_IMPL+'">\n'+
+      '          <div class="prop"  property="'+RISKMAN_EXTERNAL+'" title="external">Device instructions for '+strComponent+' explain the handling of '+strFunction+'</div>\n'+
+      '          <div class="prop"  property="'+RISKMAN_PROOF+'" title="solution">Proof: '+riskSDA.solution+' had been verified.</div>\n'+
+      '   </div></div></div>\n';
+
+
+    // return null in case of missing mitigation
+    riskSDA.regAssurance.forEach((mitigation)=>{ if(mitigation && mitigation.sdaAssurance && mitigation.sdaAssurance.name && mitigation.sdaAssurance.name.trim().slice(0,4)=='None') result = null; });
   
-    '      <div class="prop"><div class="object case"><div class="value">\n'+ // v4_1
-    '          <div class="clos"  property="'+RISKMAN_PROBLEM+'"title="problem">In case of '+riskSDA.problem+'\n</div>'+  
-    '          <div class="clos"  property="'+RISKMAN_GOAL+'"title="goal">risk of '+riskSDA.goal+' due to </div>\n'+  
-	  '          <div class="clos"  property="'+RISKMAN_CAUSE+'"title="cause">'+riskSDA.cause+' is lowered.</div>\n'+  // was prop
-    '      </div></div></div>\n'+ // v4_1
-
-
-    '      <div class="clos"  property="'+RISKMAN_HAS_SUB_SDA+'">\n'+         
-
-            //any SDA
-            riskSDA.regAssurance.map((mitigation,asu)=>(
-    '         <div class="object rsda" typeof="'+RISKMAN_SDA+'" id="'+sdaId+'ASU'+asu+'">\n'+
-    '               <div class="prop" property="'+RISKMAN_ID+'" title="id">'+sdaId+'ASU'+asu+'</div>\n'+
-    '               <div class="prop" title="measureId">'+mitigation.id+'</div>\n'+
-    '               <div class="prop" title="sdaName">'+mitigation.sdaAssurance.name+'</div>\n'+
-    '               <div class="prop" title="sdaText">'+mitigation.sdaAssurance.text+'</div>\n'+
-    '               <div class="prop" title="requirementCode">'+mitigation.sdaAssurance.requirementCode+'</div>\n'+
-    '             </div>\n'
-            )).join('\n')+
-
-
-    '      </div>\n'+
-// v6 </div>
-    '		   <div class="object" property="'+RISKMAN_HAS_IMPL+'" title="Implementation">\n'+
-    '		     <div class="value" typeof="'+RISKMAN_IMPL+'">\n'+
-    '          <div class="prop"  property="'+RISKMAN_EXTERNAL+'" title="external">Device instructions for '+strComponent+' explain the handling of '+strFunction+'</div>\n'+
-    '          <div class="prop"  property="'+RISKMAN_PROOF+'" title="solution">Proof: '+riskSDA.solution+' had been verified.</div>\n'+
-    '   </div></div></div>\n';
-
-
-  // return null in case of missing mitigation
-  riskSDA.regAssurance.forEach((mitigation)=>{ if(mitigation && mitigation.sdaAssurance && mitigation.sdaAssurance.name && mitigation.sdaAssurance.name.trim().slice(0,4)=='None') result = null; });
-  
+  } 
 
   return result;
   
