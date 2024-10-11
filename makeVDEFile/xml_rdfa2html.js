@@ -66,6 +66,7 @@ const RISKMAN_PROBLEM    = 'riskman:problem';
 const RISKMAN_CAUSE      = 'riskman:cause';
 const RISKMAN_GOAL       = 'riskman:goal';
 
+const TITLE_CONTROLS     = 'controls'; 
 
 var jRiskFile = {};
 
@@ -337,12 +338,12 @@ function prepareBODY(jRiskFile) {
 	generateDevice(jRiskFile)+
 '<div class="object" title="Table Headings">\n'+
 '	 <div class="value" typeoff="'+RISKMAN_ARI+'" title="AnalyzedRisk" id="RIT">\n'+
-'    <div class="value" property="'+RISKMAN_HAS_ARIS+'" title="controls">\n'+
+'    <div class="value" property="'+RISKMAN_HAS_ARIS+'" title="controls">\n'+ // TITLE_CONTROLS
 '      <div class="cell aris" typeof="'+RISKMAN_ARI+'" title="Risk Analysis">\n'+
 '        <div class="value" property="'+RISKMAN_ID+'" title="id">#\n'+
 '          <div class="value" property="'+RISKMAN_HAS_DOSH+'" title="protects">\n\n'+
 '			       <div class="value dosh" typeof="'+RISKMAN_DOSH+'" title="Domain-Specific Hazard">\n'+
-'              <div class="prop" property="'+RISKMAN_ID+'" title="id">0</div>\n'+
+'              <div class="prop" property="'+RISKMAN_ID+'" title="id"  onclick="enableAllDSH()" >0</div>\n'+
 '              <div class="prop" property="'+RISKMAN_HASCOMPONENT+'" title="component" ref="COM5">Component.</div>\n'+
 '              <div class="prop" property="'+RISKMAN_HASFUNCTION+'" title="function" ref="FUN2">Function.</div>\n'+
 '              <div class="clos" property="'+RISKMAN_HASHAZARD+'" title="hazard" ref="HAZ">Domain-Specific Hazard</div>\n'+
@@ -563,8 +564,8 @@ function prepareRIT(jRiskFile,jDSH,jRIT,hazardId,hazTerm,arrHazard,componentId,c
   
 
   return ''+
-  '        <div class="value"         typeof="'+RISKMAN_CORI+'"            title="'+hazsitName+'"  id="'+ritID+'"  onclick="toggleDSH('+ritID+')">\n'+
-  '          <div class="value"       property="'+RISKMAN_HAS_ARIS+'"      title="controls">\n\n'+  // v4
+  '        <div class="value"         typeof="'+RISKMAN_CORI+'"            title="'+hazsitName+'"  id="'+ritID+'"  onclick="toggleDSH(`'+ritID+'`)">\n'+
+  '          <div class="value"       property="'+RISKMAN_HAS_ARIS+'"      title="controls">\n\n'+  // v4 TITLE_CONTROLS
 
   '          <div class="cell aris"   typeof="'+RISKMAN_ARI+'"             title="Risk Analysis">\n'+  // v4
   '            <div class="value"    property="'+RISKMAN_ID+'"  title="id" >'+ritID+ // risk id v8
@@ -748,28 +749,64 @@ let strStyle='<style>\n  .container { font-size:10pt; }\n\n'+
 '  ev.dataTransfer.setData("application/json", filePath);\n}\n'+
 
 
-"function loadName() {\n"+
-"   var wshShell= window.ActiveXObject('wscript.shell');\n"+
-"   var userName=wshShell.ExpandEnvironmentStrings('%username%');\n"+
-"   console.log(userName);\n}\n"+
-" loadName();\n"+
-
-
-'function toggleDSH(ritID) {\n'+
-'	  const allObjects = document.getElementsByTagName("div");\n'+
-'	  for(let i=allObjects.length-1;i>=0;i--) if(allObjects.item(i).getAttribute("typeOf")=="'+RISKMAN_CORI+'") {\n'+
-'      let cori = allObjects.item(i);\n'+
-'      if(cori) cori.style.display="none";\n   }\n'+
-'	  let cori=document.getElementById(ritID);\n'+
-'   if(cori) cori.style.display="table-row";\n'+
-'   window.location.href ="#"ritID;\n'+
-'   console.log("goto #"+ritID);\n'+
-'}\n\n'+
 
 
 */
 
-"</script>";
+"function toggleDSH(ritID) {\n"+
+"   let cori=document.getElementById(ritID);\n"+
+"   if(cori) {\n"+
+"      let residualBox=cori.children[2];\n"+
+"      if(residualBox) {\n"+ // append a div with the text value Analyzed,Controlled,Traceable
+"         console.log('toggleDSH found Residual Box');\n"+
+"         var status;\n"+
+"         var hashValue='hash';\n"+
+"         if(residualBox.children.length<2) {\n"+
+"            status = document.createElement('div');\n"+
+"            residualBox.appendChild(status);\n"+
+"         }\n"+
+"         else status = residualBox.children[1];\n"+
+"         status.setAttribute('id','status');\n"+
+"         let value = status.innerHTML;\n"+
+"         let updated= value.startsWith('? ') ? 'A &#10003' : value.startsWith('A ') ? 'C &#10003' :  value.startsWith('C ') ? 'T &#10003' :'? ';\n"+
+"         status.innerHTML=updated;\n"+
+"         if(updated==='A') hash='analyzedRisk';\n"+
+"         const d = new Date();\n"+
+"         let timeStamp = d.toISOString();\n"+
+"         status.setAttribute('dateTime',timeStamp);\n"+
+"         let strContent=timeStamp;\n"+ // also consider payload from AnalyzedRisk / ControlledRisk
+"         digest({'algorithm':'SHA-256','message': strContent}).then((x)=>{\n"+
+"               hashValue=x;\n"+
+"               console.log('HashI('+strContent+')='+x)\n"+
+"               status.setAttribute('hash',hashValue)  });\n"+
+// when updated is 'A' then take hash of AnalyzedRisk
+"      }\n"+
+"   }\n"+
+"}\n\n"+
+
+
+"function selectDSH(ritID) {\n"+
+"   const allObjects = document.getElementsByTagName('div');\n"+
+"   for(let i=allObjects.length-1;i>=0;i--) if(allObjects.item(i).getAttribute('typeOf')=='"+RISKMAN_CORI+"') {\n"+
+"      let cori = allObjects.item(i);\n"+
+"      if(cori) cori.style.display='none';\n   }\n"+
+"   let cori=document.getElementById(ritID);\n"+
+"   if(cori) cori.style.display='table-row';\n"+
+"   window.location.href ='#'+ritID;\n"+
+"   console.log('goto #'+ritID);\n"+
+"}\n\n"+
+
+
+"\n" +
+"function enableAllDSH() {\n"+
+"   const allObjects = document.getElementsByTagName('div');\n"+
+"   for(let i=allObjects.length-1;i>=0;i--) if(allObjects.item(i).getAttribute('typeOf')=='"+RISKMAN_CORI+"') {\n"+
+"      let cori = allObjects.item(i);\n"+
+"      if(cori) cori.style.display='table-row';\n   }\n"+
+"}\n\n"+
+
+
+"</script>\n";
  
  
 function generateExportFile(jRiskFile,strRiskFile,strContent) {
