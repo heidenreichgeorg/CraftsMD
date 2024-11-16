@@ -403,12 +403,20 @@ function prepareBODY(jRiskFile) {
 '</div>\n'+
 '\n'+
 
-//'<div display="block" class="container" >\n'+
-'   <dialog display="block" title="Comment FHC" class="container" id="Comment_FHC" >\n'+
+'  <dialog display="block" title="Comment FHC" class="container" id="Comment_FHC" >\n'+
+'		   <div>\n'+
+'  			<input type="text" id="CORI"  />\n'+
+'		  </div>\n'+
+
+'		   <div>\n'+
+'  			<input type="edit" id="CMNT" value="comment"  />\n'+
+'		  </div>\n'+
+
 '		   <div>\n'+
 '			<input type="radio" id="SCEN" name="drone" value="scen" checked />\n'+
 '			<label for="SCEN">Scenario not applicable</label>\n'+
 '		  </div>\n'+
+
 '	   <div>\n'+
 '			<input type="radio" id="DUPL" name="drone" value="dupl" />\n'+
 '			<label for="DUPL">Duplicate scenario</label>\n'+
@@ -428,8 +436,7 @@ function prepareBODY(jRiskFile) {
 '			<label for="CTRL">Wrong or missing control</label>\n'+
 '		  </div>\n'+
 '		<button id="submit" type="submit" onclick="submitFHC_Comment()">Comment</button></div>   \n'+
-'   </dialog>\n'+
-//'</div>\n'+
+'  </dialog>\n'+
 
 '\n'+
 
@@ -778,7 +785,10 @@ let strStyle='<style>\n  .container { font-size:10pt; }\n\n'+
 "function commentFHC(ritID,hazSit) {\n"+
 "	console.log('commentFHC1 ('+ritID+','+hazSit+')');\n"+
 "	const dialog = document.getElementById('Comment_FHC');\n"+
-"	if(dialog) dialog.showModal();\n"+
+"	if(dialog) { dialog.showModal();\n"+
+"	   let strCori=document.getElementById('CMT_CORI');\n"+
+"	      if(strCori) { strCori.setValue(hazSit);\n"+
+"    }\n"+
 "	else console.log('commentFHC2 NO DIALOG');\n"+
 "}\n"+
 "\n"+
