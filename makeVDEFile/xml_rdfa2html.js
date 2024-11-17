@@ -1,9 +1,16 @@
 // generates VDE SPEC 90025 Export File format from json risk file 
 
+<<<<<<< HEAD
 // VERSION 20241116 v9
 
 // v9 fix XHTML break in class=value property=RISKMAN_ID title=id in AnalyzedRisk
 // v9 needs InternalFile per D1 or C7 format with relSDA.regAssurance with array    
+=======
+// VERSION 2024116 v9
+
+// v9 fix XHTML break in class=value property=RISKMAN_ID title=id in AnalyzedRisk
+// v9 needs InternalFile per C7format with relSDA.regAssurance with array    
+>>>>>>> 0a22db62aae570ade4dfdd9f6f083aebe5d9155c
 // v8 multiplicity only with typeof (instances), unique id attribute
 // v7 aligned with global riskman ontology
 // v6 ResidualRiskLevel part of ControlledRisk
@@ -404,6 +411,7 @@ function prepareBODY(jRiskFile) {
 '\n'+
 
 '  <dialog display="block" title="Comment FHC" class="container" id="Comment_FHC" >\n'+
+<<<<<<< HEAD
 '		  <div class="hedr" >&nbsp;</div>\n'+
 '     <div class="value"><div class="prop" id="CMT_RSKI" ></div></div>\n'+
 '		  <div class="hedr" >&nbsp;</div>\n'+
@@ -443,6 +451,40 @@ function prepareBODY(jRiskFile) {
 '		  <div class="hedr" >&nbsp;</div>\n'+
 '		  <div class="value"><button id="submit" type="submit" onclick="submitFHC_Comment()">Comment</button>\n'+
 '        <button id="cancel" type="submit" onclick="cancelFHC_Comment()">Cancel</button></div>   \n'+
+=======
+'		   <div>\n'+
+'  			<input type="text" id="CORI"  />\n'+
+'		  </div>\n'+
+
+'		   <div>\n'+
+'  			<input type="edit" id="CMNT" value="comment"  />\n'+
+'		  </div>\n'+
+
+'		   <div>\n'+
+'			<input type="radio" id="SCEN" name="drone" value="scen" checked />\n'+
+'			<label for="SCEN">Scenario not applicable</label>\n'+
+'		  </div>\n'+
+
+'	   <div>\n'+
+'			<input type="radio" id="DUPL" name="drone" value="dupl" />\n'+
+'			<label for="DUPL">Duplicate scenario</label>\n'+
+'		  </div>\n'+
+'\n'+
+'		   <div>\n'+
+'			<label for="MHAZ">Missing hazard</label>\n'+
+'		  </div>\n'+
+'\n'+
+'		  <div>\n'+
+'			<input type="radio" id="RISK" name="drone" value="risk" />\n'+
+'			<label for="RISK">Wrong unmitigated risk level</label>\n'+
+'		  </div>\n'+
+'\n'+
+'		  <div>\n'+
+'			<input type="radio" id="CTRL" name="drone" value="ctrl" />\n'+
+'			<label for="CTRL">Wrong or missing control</label>\n'+
+'		  </div>\n'+
+'		<button id="submit" type="submit" onclick="submitFHC_Comment()">Comment</button></div>   \n'+
+>>>>>>> 0a22db62aae570ade4dfdd9f6f083aebe5d9155c
 '  </dialog>\n'+
 
 '\n'+
@@ -866,6 +908,54 @@ let strStyle='<style>\n  .container { font-size:10pt; }\n\n'+
 "	else console.log('cancelFHC_Comment2 NO DIALOG');\n"+
 "}\n"+
 
+
+"\n"+
+
+
+"function commentFHC(ritID,hazSit) {\n"+
+"	console.log('commentFHC1 ('+ritID+','+hazSit+')');\n"+
+"	const dialog = document.getElementById('Comment_FHC');\n"+
+"	if(dialog) { dialog.showModal();\n"+
+"	   let strCori=document.getElementById('CMT_CORI');\n"+
+"	      if(strCori) { strCori.setValue(hazSit);\n"+
+"    }\n"+
+"	else console.log('commentFHC2 NO DIALOG');\n"+
+"}\n"+
+"\n"+
+"function submitFHC_Comment(rit) {\n"+
+"	console.log('submitFHC_Comment1 ('+rit+')');\n"+
+"	const dialog = document.getElementById('Comment_FHC');\n"+
+"	if(dialog) dialog.close();\n"+
+"	else console.log('submitFHC_Comment2 NO DIALOG');\n"+
+"}\n"+
+
+
+"\n"+
+"function toggleDSH(cori) {\n"+
+"	if(!cori) console.log('NO CORI');\n"+
+"	else {\n"+
+"		let hazSit=cori.title;\n"+
+"		console.log('CORI  '+cori.title);\n"+
+"		let hasa=cori.firstElementChild;\n"+
+"		if(!hasa) console.log('NO HAS_ARIS');\n"+
+"		else {\n"+
+"			console.log('HASA  '+hasa.title);\n"+
+"			let aris=hasa.firstElementChild;\n"+
+"			if(!aris) console.log('NO ARIS');\n"+
+"			else {\n"+
+"				console.log('ARIS  '+aris.title);\n"+
+"				let cell=aris.firstElementChild;\n"+
+"				if(!cell) console.log('NO CELL');\n"+
+"				else {\n"+
+"					let ritID=cell.innerHTML;\n"+
+"					commentFHC(ritID,hazSit); \n"+
+"					\n"+
+"				}\n"+
+"			}\n"+
+"		}\n"+
+"	}\n"+
+"}\n"+
+"\n"+
 
 
 /*
