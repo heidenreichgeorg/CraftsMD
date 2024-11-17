@@ -1,11 +1,16 @@
 // generates VDE SPEC 90025 Export File format from json risk file 
 
-// VERSION 20240220 v7b with 
-// v4 IMDRF AET codes and DomainSpecificHazard,AnalyzedRisk with HazSit and Harm
-// v5 multiple DomainSpecificHazards per AnalyzedRisk
-// v6 ResidualRiskLevel part of ControlledRisk
-// v7 aligned with global riskman ontology
+// VERSION 20241116 v9
+
+// v9 fix XHTML break in class=value property=RISKMAN_ID title=id in AnalyzedRisk
+// v9 needs InternalFile per D1 or C7 format with relSDA.regAssurance with array    
 // v8 multiplicity only with typeof (instances), unique id attribute
+// v7 aligned with global riskman ontology
+// v6 ResidualRiskLevel part of ControlledRisk
+// v5 multiple DomainSpecificHazards per AnalyzedRisk
+// v4 IMDRF AET codes and DomainSpecificHazard,AnalyzedRisk with HazSit and Harm
+
+
 
 // CHECK ?? 'signature' needs to switch on all elements "display:block" to ensure repeatable SHA-256 digest
 
@@ -340,7 +345,7 @@ function prepareBODY(jRiskFile) {
 '	 <div class="value" typeoff="'+RISKMAN_ARI+'" title="AnalyzedRisk" id="RIT">\n'+
 '    <div class="value" property="'+RISKMAN_HAS_ARIS+'" title="controls">\n'+ // TITLE_CONTROLS
 '      <div class="cell aris" typeof="'+RISKMAN_ARI+'" title="Risk Analysis">\n'+
-'        <div class="value" property="'+RISKMAN_ID+'" title="id">#\n'+
+'        <div class="value" property="'+RISKMAN_ID+'" title="id"><div>#</div>\n'+
 '          <div class="value" property="'+RISKMAN_HAS_DOSH+'" title="protects">\n\n'+
 '			       <div class="value dosh" typeof="'+RISKMAN_DOSH+'" title="Domain-Specific Hazard">\n'+
 '              <div class="prop" property="'+RISKMAN_ID+'" title="id"  onclick="enableAllDSH()" >0</div>\n'+
@@ -396,6 +401,51 @@ function prepareBODY(jRiskFile) {
 '     </div>          <div class="clos">&nbsp;</div>\n\n'+
 '   </div>\n'+
 '</div>\n'+
+'\n'+
+
+'  <dialog display="block" title="Comment FHC" class="container" id="Comment_FHC" >\n'+
+'		  <div class="hedr" >&nbsp;</div>\n'+
+'     <div class="value"><div class="prop" id="CMT_RSKI" ></div></div>\n'+
+'		  <div class="hedr" >&nbsp;</div>\n'+
+'     <div class="value"><div class="prop" id="CMT_COMP" ></div></div>\n'+
+'		  <div class="hedr" >&nbsp;</div>\n'+
+'     <div class="value"><div class="prop" id="CMT_FUNC" ></div></div>\n'+
+'		  <div class="hedr" >&nbsp;</div>\n'+
+'     <div class="value"><div class="prop" id="CMT_HARM" ></div></div>\n'+
+'		  <div class="hedr" >&nbsp;</div>\n'+
+'     <div class="value"><div class="prop" id="CMT_CORI" ></div></div>\n'+
+'     <div>\n'+
+'\n'+
+'		  <div class="hedr" >&nbsp;</div>\n'+
+'			<input type="radio" id="CMT_SCEN" name="drone" value="scen" checked />\n'+
+'			<label for="CMT_SCEN">Scenario not applicable</label>\n'+
+'		  </div>\n'+
+'	    <div>\n'+
+'			<input type="radio" id="CMT_DUPL" name="drone" value="dupl" />\n'+
+'			<label for="CMT_DUPL">Duplicate scenario</label>\n'+
+'		  </div>\n'+
+'		   <div>\n'+
+'			<input type="radio" id="CMT_MHAZ" name="drone" value="mhaz" />\n'+
+'			<label for="CMT_MHAZ">Missing hazard</label>\n'+
+'		  </div>\n'+
+'		  <div>\n'+
+'			<input type="radio" id="CMT_RISK" name="drone" value="risk" />\n'+
+'			<label for="CMT_RISK">Wrong unmitigated risk level</label>\n'+
+'		  </div>\n'+
+'		  <div>\n'+
+'			<input type="radio" id="CMT_CTRL" name="drone" value="ctrl" />\n'+
+'			<label for="CMT_CTRL">Wrong or missing control</label>\n'+
+'		  </div>\n'+
+'\n'+
+'		  <div class="hedr" >&nbsp;</div>\n'+
+'		  <div class="value"><div class="prop"><input type="edit" id="CMT_CMNT" value="comment"  /></div></div>\n'+
+'\n'+
+'		  <div class="hedr" >&nbsp;</div>\n'+
+'		  <div class="value"><button id="submit" type="submit" onclick="submitFHC_Comment()">Comment</button>\n'+
+'        <button id="cancel" type="submit" onclick="cancelFHC_Comment()">Cancel</button></div>   \n'+
+'  </dialog>\n'+
+
+'\n'+
 
 
   '        </div>\n\n'+
@@ -414,7 +464,7 @@ function prepareBODY(jRiskFile) {
     '   <DIV>Name<input type="edit" id="signName"></input>\n'+
     '      <label for="signature">Reason:</label>\n'+
     '      <select name="reason" id="reason">\n'+
-    '         <option value="modified">Modified</option>\n'+
+    '         <option value="commented">Commented</option>\n'+
     '         <option value="reviewed">Reviewed</option>\n'+
     '         <option value="submitted">Submitted</option>\n'+
     '         <option value="approved">Approved</option>\n'+
@@ -568,7 +618,7 @@ function prepareRIT(jRiskFile,jDSH,jRIT,hazardId,hazTerm,arrHazard,componentId,c
   '          <div class="value"       property="'+RISKMAN_HAS_ARIS+'"      title="controls">\n\n'+  // v4 TITLE_CONTROLS
 
   '          <div class="cell aris"   typeof="'+RISKMAN_ARI+'"             title="Risk Analysis">\n'+  // v4
-  '            <div class="value"    property="'+RISKMAN_ID+'"  title="id" >'+ritID+ // risk id v8
+  '            <div class="value"    property="'+RISKMAN_ID+'"  title="id" ><div>'+ritID+'</div>'+ // risk id v9
   '              <div class="value"     property="'+RISKMAN_HAS_DOSH+'"        title="protects" >\n'+arrDOSH.join('\n')+'</div>\n'+  
   '              <div class="prop"  property="'+RISKMAN_HASTARGET+'"     title="target"><div class="object" typeof="'+RISKMAN_TARGET+'"><div class="value" ><div class="prop" >'+(jRIT.regTarget?(jRIT.regTarget.join('</div></div><div class="value" ><div class="prop" >')):"?")+'</div></div></div></div>\n'+
   
@@ -637,12 +687,13 @@ let strStyle='<style>\n  .container { font-size:10pt; }\n\n'+
 
 	'  .value {\n'+
 	'    display: table-row;\n'+
-  '       overflow:auto;\n'+
+  '    overflow:auto;\n'+
 	'  }\n\n'+
 
 '  .hedr {\n'+
 '      display: table-cell;\n'+
 '      min-width: 45px;\n'+
+'      min-height: 10px;\n'+  // v9
 '      border-top: 1px solid black;\n'+
 '      padding: 0px;\n'+
 '  }\n\n'+
@@ -735,6 +786,86 @@ let strStyle='<style>\n  .container { font-size:10pt; }\n\n'+
 "   const name = document.getElementById('signName').value;\n"+
 "   node.innerHTML= digest+' &rarr; '+(new Date()).toISOString()+': '+name; \n}\n"+
 
+"\n"+
+
+"\n"+
+"function toggleDSH(strCori) {\n"+
+"	const cori = document.getElementById(strCori);\n"+
+"	if(!cori) console.log('NO CORI');\n"+
+"	else {\n"+
+"		let hazSit=cori.title;\n"+
+"		console.log('CORI  '+cori.title);\n"+
+"		console.log('CORI  '+cori.innerHTML);\n"+
+"		let hasa=cori.firstElementChild;\n"+
+"		if(!hasa) console.log('NO HAS_ARIS');\n"+
+"		else {\n"+
+"			console.log('HASA  '+hasa.title);\n"+
+"			let aris=hasa.firstElementChild;\n"+
+"			if(!aris) console.log('NO ARIS');\n"+
+"			else {\n"+
+"				console.log('ARIS  '+aris.title);\n"+
+"				let comp='sysComp';\n"+
+"				let func='sysFunc';\n"+
+"				let harm='sysHarm';\n"+
+"				let risk=aris.firstElementChild;\n"+
+"				if(!risk) console.log('NO RISK');\n"+
+"				else {\n"+
+"				  console.log('RISK= '+risk.innerHTML);\n"+
+"				  let riskID=risk.firstElementChild.innerHTML;\n"+
+"				  let arrDosh=risk.children[1];\n"+
+"				  let target=risk.children[2].firstElementChild;\n"+
+"				  let cause=risk.children[3];\n"+
+"				  let harm=risk.children[4];\n"+
+"					commentFHC(riskID,target,arrDosh,comp,func,harm,hazSit); \n"+
+"					\n"+
+"				}\n"+
+"			}\n"+
+"		}\n"+
+"	}\n"+
+"}\n"+
+"\n"+
+
+"function commentFHC(riskID,eval,dosh,component,func,harm,hazSit) {\n"+
+"	console.log('commentFHC0 ('+riskID+')');\n"+
+"	console.log('commentFHC1 ('+eval.innerHTML+')');\n"+
+"	console.log('commentFHC2 ('+dosh.innerHTML+')');\n"+
+"	console.log('commentFHC3 ('+hazSit+')');\n"+
+"	console.log('commentFHC4 ('+harm.innerHTML+')');\n"+
+
+"	const dialog = document.getElementById('Comment_FHC');\n"+
+"	if(dialog) { dialog.showModal();\n"+
+"	   let strRski=document.getElementById('CMT_RSKI');\n"+
+"	      if(strRski) { strComp.innerHTML=riskID;\n"+
+"       }\n"+
+"	   let strComp=document.getElementById('CMT_COMP');\n"+
+"	      if(strComp) { strComp.innerHTML=component;\n"+
+"       }\n"+
+"	   let strFunc=document.getElementById('CMT_FUNC');\n"+
+"	      if(strFunc) { strFunc.innerHTML=func;\n"+
+"       }\n"+
+"	   let strHarm=document.getElementById('CMT_HARM');\n"+
+"	      if(strHarm) { strHarm.innerHTML=harm;\n"+
+"       }\n"+
+"	   let strCori=document.getElementById('CMT_CORI');\n"+
+"	      if(strCori) { strCori.innerHTML=hazSit;\n"+
+"       }\n"+
+"    }\n"+
+"	   else console.log('commentFHC2 NO DIALOG');\n"+
+"}\n"+
+"\n"+
+"function submitFHC_Comment(rit) {\n"+
+"	console.log('submitFHC_Comment1 ('+rit+')');\n"+
+"	const dialog = document.getElementById('Comment_FHC');\n"+
+"	if(dialog) dialog.close();\n"+
+"	else console.log('submitFHC_Comment2 NO DIALOG');\n"+
+"}\n"+
+"function cancelFHC_Comment(rit) {\n"+
+"	console.log('cancelFHC_Comment1 ('+rit+')');\n"+
+"	const dialog = document.getElementById('Comment_FHC');\n"+
+"	if(dialog) dialog.close();\n"+
+"	else console.log('cancelFHC_Comment2 NO DIALOG');\n"+
+"}\n"+
+
 
 
 /*
@@ -749,9 +880,6 @@ let strStyle='<style>\n  .container { font-size:10pt; }\n\n'+
 '  ev.dataTransfer.setData("application/json", filePath);\n}\n'+
 
 
-
-
-*/
 
 "function toggleDSH(ritID) {\n"+
 "   let cori=document.getElementById(ritID);\n"+
@@ -796,6 +924,7 @@ let strStyle='<style>\n  .container { font-size:10pt; }\n\n'+
 "   console.log('goto #'+ritID);\n"+
 "}\n\n"+
 
+*/
 
 "\n" +
 "function enableAllDSH() {\n"+
